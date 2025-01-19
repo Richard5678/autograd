@@ -1,47 +1,5 @@
 import numpy as np
-
-
-class Tensor:
-    def __init__(self, value, prev=[]):
-        self.value = value
-        self._prev = prev
-        self.grad = None
-        self._backward = None
-        self._op = None
-
-    @property
-    def shape(self):
-        return self.value.shape
-
-    def backward(self):
-        # topological sort
-        topo_order = []
-        visited = set()
-
-        def build_topo(tensor):
-            visited.add(tensor)
-            for prev in tensor._prev:
-                if prev not in visited:
-                    build_topo(prev)
-
-            topo_order.append(tensor)
-
-        build_topo(self)
-
-        if self.grad == None:
-            self.grad = Tensor(np.ones_like(self.value))
-
-        # backprop
-        for tensor in reversed(topo_order):
-            if tensor._backward == None:
-                continue
-
-            grads = tensor._backward(tensor.grad)
-            for prev, grad in zip(tensor._prev, grads):
-                if prev.grad == None:
-                    prev.grad = grad
-                else:
-                    prev.grad += grad
+from autograd.tensor import Tensor
 
 
 # Ops:
