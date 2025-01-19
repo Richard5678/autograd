@@ -1,17 +1,16 @@
 import unittest
 import numpy as np
-from autograd.nn import Linear
-
+from autograd.nn import Tensor, Linear
 
 class TestNN(unittest.TestCase):
     def test_nn(self):
         in_dim, out_dim = 3, 5
         B = 1
         linear = Linear(in_dim, out_dim)
-        X = np.ones((B, 3))
+        X = Tensor(np.ones((B, in_dim)))
         y = linear.forward(X)
 
-        dy = np.zeros_like(y)
+        dy = Tensor(np.ones_like(y.value))
         dx, dw = linear.backward(dy)
 
         self.assertEqual(dx.shape, X.shape)
