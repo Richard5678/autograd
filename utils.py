@@ -28,7 +28,11 @@ def draw_dot(root, format="svg", rankdir="LR"):
 
     for n in nodes:
         # dot.node(name=str(id(n)), label = "{ data %.4f | grad %.4f }" % (n.value, n.grad), shape='record')
-        dot.node(name=str(id(n)), label=f"value={n.value}; grad={n.grad.value}")
+        if n.grad != None:
+            dot.node(name=str(id(n)), label=f"value={n.value}; grad={n.grad.value}")
+        else:
+            dot.node(name=str(id(n)), label=f"value={n.value}")
+            
         if n._op:
             dot.node(name=str(id(n)) + n._op, label=n._op)
             dot.edge(str(id(n)) + n._op, str(id(n)))
